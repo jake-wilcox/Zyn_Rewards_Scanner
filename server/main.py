@@ -10,10 +10,10 @@ options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(service=Service(ChromeDriverManager("114.0.5735.90").install()), options=options)
 
 email = "jakewilcox242@gmail.com"
-password = "Quhkud-5qorpa-nonqad"
+password = input('Enter Password')
 
 driver.get("https://us.zyn.com/ZYNRewards/")
-time.sleep(6)
+time.sleep(3)
 driver.find_element("xpath", "/html/body/div[5]/div/div/div/div/button").click()
 
 time.sleep(3)
