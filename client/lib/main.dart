@@ -19,19 +19,39 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const Text(
-          'cmon',
+          'James Camzyn',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      body: const Center(
-        child: Text('hello world!!!'),
+      body: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('hello'),
+              Text('wrld'),
+              SizedBox(
+                width: 225,
+                height: 50,
+                child: TextField(
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'XXXXXXXXXXXXXXXXX',
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: const Text('cli'),
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }
