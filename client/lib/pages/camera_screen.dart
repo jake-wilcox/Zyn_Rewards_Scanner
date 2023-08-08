@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -21,9 +20,16 @@ class _CameraScreenState extends State<CameraScreen> {
 
   void startCamera() async {
     cameras = await availableCameras();
+    print(cameras);
 
     cameraController = CameraController(
-      cameras[0],
+// camera descriptions
+// 0: main rear fasing camera, bad for /* closeups /* */ */
+// 1: front fasing camera
+// 2: blurry af
+// 3: close up cam
+
+      cameras[3],
       ResolutionPreset.high,
       enableAudio: false,
     );
@@ -63,6 +69,7 @@ class _CameraScreenState extends State<CameraScreen> {
               },
               child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
             ),
+            cameraOverlay()
           ],
         ),
       );
@@ -71,13 +78,46 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
+  Widget cameraOverlay() {
+    return Align(
+      alignment: Alignment.center,
+      child: Transform.scale(
+        scale: 1.3,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 200),
+          height: 150,
+          width: 300,
+          decoration: const ShapeDecoration(
+            color: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(width: 2, color: Colors.white),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(300),
+                topRight: Radius.circular(300),
+              ),
+            ),
+          ),
+          child: const Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Text(
+                style: TextStyle(fontSize: 20, color: Colors.black54),
+                'XXXXXXXXXXXXXXXX',
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget button(IconData icon, Alignment alignment) {
     return Align(
       alignment: alignment,
       child: Container(
         margin: const EdgeInsets.only(
-          left: 20,
-          bottom: 20,
+          bottom: 50,
         ),
         height: 50,
         width: 50,
