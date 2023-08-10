@@ -39,7 +39,9 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/camera');
+        },
         child: const Icon(Icons.camera_alt),
       ),
     );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:image/image.dart' as img;
+import 'dart:io';
+import 'package:client/imageProcessor.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -24,7 +27,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     cameraController = CameraController(
 // camera descriptions
-// 0: main rear fasing camera, bad for /* closeups /* */ */
+// 0: main rear fasing camera, bad for closeups
 // 1: front fasing camera
 // 2: blurry af
 // 3: close up cam
@@ -54,22 +57,43 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     if (cameraController.value.isInitialized) {
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: const Text(
+            'James Camzyn',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         body: Stack(
           children: [
             CameraPreview(cameraController),
-            GestureDetector(
-              onTap: () {
-                cameraController.takePicture().then((XFile? file) {
-                  if (mounted) {
-                    if (file != null) {
-                      print("Picture saved to ${file.path}");
-                    }
-                  }
-                });
-              },
-              child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
+            // button stack
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: 500,
+                height: 120,
+                child: FloatingActionButton(
+                  child: const Icon(Icons.camera),
+                  onPressed: () async {
+                    final pic = await cameraController.takePicture();
+                    if (!mounted) return;
+
+                    print("Picture saved to ${pic.path}");
+                    //send file to image display widget
+                    await ImageProcessor.cropPlz(pic.path, pic.path, false);
+
+                    await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            DisplayPictureScreen(imagePath: pic.path)));
+                  },
+                ),
+              ),
             ),
-            cameraOverlay()
+            cameraOverlay(),
           ],
         ),
       );
@@ -85,22 +109,22 @@ class _CameraScreenState extends State<CameraScreen> {
         scale: 1.3,
         child: Container(
           margin: const EdgeInsets.only(bottom: 200),
-          height: 150,
+          height: 130,
           width: 300,
           decoration: const ShapeDecoration(
             color: Colors.transparent,
             shape: RoundedRectangleBorder(
               side: BorderSide(width: 2, color: Colors.white),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(300),
-                topRight: Radius.circular(300),
+                topLeft: Radius.circular(290),
+                topRight: Radius.circular(290),
               ),
             ),
           ),
           child: const Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.only(bottom: 7),
               child: Text(
                 style: TextStyle(fontSize: 20, color: Colors.black54),
                 'XXXXXXXXXXXXXXXX',
@@ -111,34 +135,21 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
     );
   }
+}
 
-  Widget button(IconData icon, Alignment alignment) {
-    return Align(
-      alignment: alignment,
-      child: Container(
-        margin: const EdgeInsets.only(
-          bottom: 50,
-        ),
-        height: 50,
-        width: 50,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(2, 2),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            color: Colors.black54,
-          ),
-        ),
-      ),
+// Widget that displays picutre
+class DisplayPictureScreen extends StatelessWidget {
+  final String imagePath;
+
+  const DisplayPictureScreen({super.key, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Display the Picture')),
+      // The image is stored as a file on the device. Use the `Image.file`
+      // constructor with the given path to display the image.
+      body: Image.file(File(imagePath)),
     );
   }
 }
