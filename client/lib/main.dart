@@ -12,7 +12,7 @@ void main() {
     initialRoute: '/',
     routes: {
       '/': (context) => const HomeScreen(),
-      '/camera': (context) => CameraScreen()
+      '/camera': (context) => CameraScreen(),
     },
   ));
 }

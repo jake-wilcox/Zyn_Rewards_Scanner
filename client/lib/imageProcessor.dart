@@ -1,23 +1,17 @@
 import 'dart:io';
-import 'dart:math';
-import 'package:flutter/rendering.dart';
 import 'package:image/image.dart' as IMG;
 
 class ImageProcessor {
-  static Future cropPlz(
-      String srcFilePath, String destFilePath, bool flip) async {
+  static Future cropPlz(String srcFilePath) async {
     var bytes = await File(srcFilePath).readAsBytes();
     IMG.Image src = IMG.decodeImage(bytes)!;
 
-    int offsetX = (src.width - min(src.width, src.height)) ~/ 2;
-    int offsetY = (src.height - min(src.width, src.height)) ~/ 2;
+    int w = (src.width * 0.8).round();
+    int offsetX = (src.width - w) ~/ 2;
+    int offsetY = 503;
 
     IMG.Image destImage =
-        IMG.copyCrop(src, x: offsetX, y: offsetY, width: 300, height: 100);
-
-    if (flip) {
-      destImage = IMG.flipVertical(destImage);
-    }
+        IMG.copyCrop(src, x: offsetX, y: offsetY, width: w, height: 90);
 
     var jpg = IMG.encodeJpg(destImage);
     await File(srcFilePath).writeAsBytes(jpg);

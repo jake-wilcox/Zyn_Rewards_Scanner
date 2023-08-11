@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:image/image.dart' as img;
 import 'dart:io';
 import 'package:client/imageProcessor.dart';
+import 'package:client/pages/sucess_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -82,13 +82,12 @@ class _CameraScreenState extends State<CameraScreen> {
                     final pic = await cameraController.takePicture();
                     if (!mounted) return;
 
-                    print("Picture saved to ${pic.path}");
-                    //send file to image display widget
-                    await ImageProcessor.cropPlz(pic.path, pic.path, false);
+                    // crop image to prepare for ocr
+                    await ImageProcessor.cropPlz(pic.path);
 
+                    //send file to image display widget
                     await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            DisplayPictureScreen(imagePath: pic.path)));
+                        builder: (context) => SucessScreen(imgPath: pic.path)));
                   },
                 ),
               ),
