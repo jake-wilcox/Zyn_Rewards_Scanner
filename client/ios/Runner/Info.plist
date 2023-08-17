@@ -49,5 +49,10 @@
 	<false/>
     <key>NSCameraUsageDescription</key>
     <string>Need to scan zyn codes</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+    </dict>
 </dict>
 </plist>

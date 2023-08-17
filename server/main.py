@@ -4,15 +4,15 @@ import driver
 
 app = FastAPI()
 
-origins = ['https://localhost:3000',
-           'http://localhost:3000']
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
-    allow_methods = ['*'],
-    allow_headers = ['*'], 
-    )
+# origins = ['https://localhost:3000',
+#            'http://localhost:3000']
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins = origins,
+#     allow_credentials = True,
+#     allow_methods = ['*'],
+#     allow_headers = ['*'], 
+#     )
 
 
 @app.get("/")
@@ -25,6 +25,8 @@ def zyn_login():
     global s, is_logged_in
     s = driver.Session() 
     s.login()
+    points = s.get_points()
+    return points
 
 
 @app.get('/getPoints')

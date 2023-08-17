@@ -3,6 +3,8 @@ import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC 
 from webdriver_manager.chrome import ChromeDriverManager
 import os
 from dotenv import load_dotenv
@@ -28,7 +30,6 @@ class Session():
         options.add_experimental_option("detach", True)
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("--disable-extensions")
-        options.add_argument("--window-size=1500x900");
         options.add_argument(f'user-agent={ua.random}')
         driver = webdriver.Chrome(service=Service(ChromeDriverManager("114.0.5735.16").install()), options=options)
         return driver
@@ -39,16 +40,24 @@ class Session():
         time.sleep(random.randrange(3,5))
         self.driver.find_element("xpath", "/html/body/div[5]/div/div/div/div/button").click()
         time.sleep(random.randrange(1, 3))
+        print('entering credentials')
         self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[1]/input").send_keys(os.getenv('EMAIL'))
         self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[2]/input").send_keys(os.getenv('PASSWORD'))
         time.sleep(random.randrange(5, 10))
         login_button = self.driver.find_element("xpath", "//button[@type='submit']")
         time.sleep(random.randrange(1, 3))
         self.driver.find_element('xpath', '/html/body/div[6]/form/div/div[1]/div[3]/div').click()
-        time.sleep(random.randrange(15, 16))
+        time.sleep(random.randrange(25, 26))
+        print('clicking button')
         login_button.click()
+        print(self.driver.current_url)
+
+
 
     def get_points(self):
+        time.sleep(13.2)
+        print(self.driver.current_url)
+        print('getting points')
         points_element = self.driver.find_element("xpath", "/html/body/div[2]/a[2]/span[1]")
         print(points_element.get_attribute('innerHTML'))
         return(points_element.get_attribute('innerHTML'))

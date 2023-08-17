@@ -12,6 +12,7 @@ class SucessScreen extends StatefulWidget {
 
 class _SucessScreenState extends State<SucessScreen> {
   bool _isBusy = false;
+  bool _codeAccepted = false;
 
   @override
   void initState() {
@@ -26,7 +27,13 @@ class _SucessScreenState extends State<SucessScreen> {
       appBar: AppBar(title: const Text('sucess screen')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Image.file(File(widget.imgPath)),
+      body: _isBusy == true
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Center(
+              child: Image.file(File(widget.imgPath)),
+            ),
     );
   }
 
@@ -40,6 +47,7 @@ class _SucessScreenState extends State<SucessScreen> {
         await textRecognizer.processImage(image);
     print('text recognized');
     print(recognizedText.text);
+    _codeAccepted = true;
 
     setState(() {
       _isBusy = false;
