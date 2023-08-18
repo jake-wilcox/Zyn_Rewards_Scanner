@@ -1,7 +1,34 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class HomeScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String points = '';
+  void getPoints() async {
+    Response response = await get(Uri.http('192.168.0.5:8000', 'getPoints'));
+    print('data aquired over');
+    Map data = jsonDecode(response.body);
+    print(data);
+
+    setState(() {
+      points = data['points'];
+    });
+  }
+
+  @override
+  void initState() {
+    getPoints();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +42,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Row(
+      body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Column(
@@ -23,7 +50,8 @@ class HomeScreen extends StatelessWidget {
             children: [
               Text('hello'),
               Text('wrld'),
-              SizedBox(
+              Text(points),
+              const SizedBox(
                 width: 225,
                 height: 50,
                 child: TextField(

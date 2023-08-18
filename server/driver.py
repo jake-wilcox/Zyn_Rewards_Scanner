@@ -31,7 +31,7 @@ class Session():
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("--disable-extensions")
         options.add_argument(f'user-agent={ua.random}')
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager("114.0.5735.16").install()), options=options)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return driver
 
     def login(self):
@@ -43,19 +43,20 @@ class Session():
         print('entering credentials')
         self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[1]/input").send_keys(os.getenv('EMAIL'))
         self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[2]/input").send_keys(os.getenv('PASSWORD'))
-        time.sleep(random.randrange(5, 10))
-        login_button = self.driver.find_element("xpath", "//button[@type='submit']")
-        time.sleep(random.randrange(1, 3))
-        self.driver.find_element('xpath', '/html/body/div[6]/form/div/div[1]/div[3]/div').click()
-        time.sleep(random.randrange(25, 26))
-        print('clicking button')
-        login_button.click()
-        print(self.driver.current_url)
 
+
+        # time.sleep(random.randrange(5, 10))
+        # login_button = self.driver.find_element("xpath", "//button[@type='submit']")
+        # time.sleep(random.randrange(1, 3))
+        # self.driver.find_element('xpath', '/html/body/div[6]/form/div/div[1]/div[3]/div').click()
+        # time.sleep(random.randrange(30, 36))
+        # print('clicking button')
+        # login_button.click()
+        # login_button.click()
+        # print(self.driver.current_url)
 
 
     def get_points(self):
-        time.sleep(13.2)
         print(self.driver.current_url)
         print('getting points')
         points_element = self.driver.find_element("xpath", "/html/body/div[2]/a[2]/span[1]")

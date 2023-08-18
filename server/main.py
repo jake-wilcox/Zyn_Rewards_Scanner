@@ -25,14 +25,15 @@ def zyn_login():
     global s, is_logged_in
     s = driver.Session() 
     s.login()
-    points = s.get_points()
-    return points
+    # points = s.get_points()
+    # return {'points': points}
+    return {"success": True}
 
 
 @app.get('/getPoints')
 def get_points():
     points = s.get_points()
-    return points 
+    return {'points': points} 
 
 app.post('/enterCode')
 def _enter_code(code):
