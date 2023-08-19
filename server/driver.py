@@ -64,8 +64,9 @@ class Session():
         return(points_element.get_attribute('innerHTML'))
 
 
-    def enter_code(code):
-        time.sleep(random.randrange(7, 10))
+    def enter_code(self, code):
         self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[1]/input").send_keys(code)
+        time.sleep(random.randrange(2, 3))
+        self.driver.find_element("xpath", "/html/body/div[12]/i").click()
+        time.sleep(random.randrange(2, 3))
         self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[1]/button").click()
-

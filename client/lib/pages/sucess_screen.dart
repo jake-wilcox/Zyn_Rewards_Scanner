@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:http/http.dart';
 
 class SucessScreen extends StatefulWidget {
   final String imgPath;
@@ -47,6 +50,16 @@ class _SucessScreenState extends State<SucessScreen> {
         await textRecognizer.processImage(image);
     print('text recognized');
     print(recognizedText.text);
+
+    var data = jsonEncode({'code': recognizedText.text});
+    print(data);
+
+    Response response = await post(Uri.http('192.168.0.5:8000', 'enterCode'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: data);
+    print(response.body);
     _codeAccepted = true;
 
     setState(() {

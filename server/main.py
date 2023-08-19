@@ -1,6 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import driver
+
+
+class Code(BaseModel):
+    code: str
 
 app = FastAPI()
 
@@ -35,7 +40,9 @@ def get_points():
     points = s.get_points()
     return {'points': points} 
 
-app.post('/enterCode')
-def _enter_code(code):
-    s.enter_code(code)
+@app.post('/enterCode')
+def _enter_code(code: Code):
+    print(code.code)
+    s.enter_code(code.code)
+    return {'sucess': True}
 
