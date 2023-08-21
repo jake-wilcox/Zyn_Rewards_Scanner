@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client/widgets/CodetextBox.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -50,18 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text('hello'),
               Text('wrld'),
-              Text(points),
-              const SizedBox(
-                width: 225,
-                height: 50,
-                child: TextField(
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'XXXXXXXXXXXXXXXXX',
-                  ),
-                ),
-              )
+//              Text(points),
+              CodeTextBox(code: ''),
             ],
           ),
         ],

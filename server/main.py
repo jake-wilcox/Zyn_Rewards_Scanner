@@ -44,5 +44,6 @@ def get_points():
 def _enter_code(code: Code):
     print(code.code)
     s.enter_code(code.code)
-    return {'sucess': True}
+    message = s.is_sucess()
+    return message
 
