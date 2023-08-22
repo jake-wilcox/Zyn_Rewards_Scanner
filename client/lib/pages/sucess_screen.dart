@@ -1,14 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
-
+import 'package:client/functions/enterCode.dart';
 import 'package:client/widgets/CodetextBox.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:http/http.dart';
 
 class SucessScreen extends StatefulWidget {
-  final String imgPath;
-  const SucessScreen({super.key, required this.imgPath});
+  final String code;
+  const SucessScreen({super.key, required this.code});
 
   @override
   State<SucessScreen> createState() => _SucessScreenState();
@@ -41,7 +38,7 @@ class _SucessScreenState extends State<SucessScreen> {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        //go back a page
+                        Navigator.pop(context);
                       },
                       child: Icon(Icons.camera_alt, color: Colors.grey),
                     ),
@@ -51,6 +48,8 @@ class _SucessScreenState extends State<SucessScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         //replace page with home
+                        Navigator.popUntil(
+                            context, ModalRoute.withName('/home'));
                       },
                       child: Icon(Icons.home, color: Colors.grey),
                     ),
@@ -64,31 +63,25 @@ class _SucessScreenState extends State<SucessScreen> {
   @override
   void initState() {
     super.initState();
-    final InputImage inputImage = InputImage.fromFilePath(widget.imgPath);
-    process(inputImage);
+    // final InputImage inputImage = InputImage.fromFilePath(widget.imgPath);
+    processCode(widget.code);
   }
 
-  void process(InputImage image) async {
-    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+  void processCode(String code) async {
+    // final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     setState(() {
       _isBusy = true;
     });
 
-    final RecognizedText recognizedText =
-        await textRecognizer.processImage(image);
-    print('text recognized');
-    print(recognizedText.text);
+    // final RecognizedText recognizedText =
+    // await textRecognizer.processImage(image);
+    // print('text recognized');
+    // print(recognizedText.text);
 
-    var data = jsonEncode({'code': recognizedText.text});
-    print(data);
-
-    Response response = await post(Uri.http('192.168.0.5:8000', 'enterCode'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: data);
+    final response = await EnterCode.enterCodeReq(widget.code);
 
     Map jsonResponse = jsonDecode(response.body);
+
     print(jsonResponse);
     int status = jsonResponse['status_code'];
     if (status == 0) {
@@ -98,7 +91,7 @@ class _SucessScreenState extends State<SucessScreen> {
     }
 
     setState(() {
-      _code = recognizedText.text;
+      _code = widget.code;
       _message = jsonResponse['message'];
       _isBusy = false;
     });

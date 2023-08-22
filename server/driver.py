@@ -60,8 +60,9 @@ class Session():
         print(self.driver.current_url)
         print('getting points')
         points_element = self.driver.find_element("xpath", "/html/body/div[2]/a[2]/span[1]")
+        print('found points element')
         time.sleep(random.randrange(1, 2))
-        self.driver.find_element("xpath", "/html/body/div[12]/i").click()
+        self.driver.find_element("xpath", "/html/body/div[13]/i").click()
         print(points_element.get_attribute('innerHTML'))
         return(points_element.get_attribute('innerHTML'))
 
@@ -69,17 +70,17 @@ class Session():
 
 
     def enter_code(self, code):
-        self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[1]/input").clear()
+        self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/input").clear()
         time.sleep(random.randrange(1, 2))
-        self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[1]/input").send_keys(code)
+        self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/input").send_keys(code)
         time.sleep(random.randrange(1, 2))
-        self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[1]/button").click()
+        self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/button").click()
 
 
 
     def is_sucess(self):
         time.sleep(random.randrange(1, 2))
-        sucess_location = self.driver.find_element("xpath", "/html/body/div[7]/div/div[1]/form/div[2]/div/p")
+        sucess_location = self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[2]/div/p")
         sucess_paragraph = str(sucess_location.get_attribute('innerHTML'))
         print(sucess_paragraph[:8]) 
         if sucess_paragraph[0] == 'S':

@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text('hello'),
               Text('wrld'),
-//              Text(points),
+              Text(points),
               CodeTextBox(code: ''),
             ],
           ),

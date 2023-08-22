@@ -1,7 +1,8 @@
+import 'package:client/functions/imageProcessor.dart';
+import 'package:client/functions/ocr.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
-import 'package:client/imageProcessor.dart';
 import 'package:client/pages/sucess_screen.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -24,14 +25,12 @@ class _CameraScreenState extends State<CameraScreen> {
   void startCamera() async {
     cameras = await availableCameras();
     print(cameras);
-
     cameraController = CameraController(
 // camera descriptions
 // 0: main rear fasing camera, bad for closeups
 // 1: front fasing camera
 // 2: blurry af
 // 3: close up cam
-
       cameras[3],
       ResolutionPreset.high,
       enableAudio: false,
@@ -85,9 +84,12 @@ class _CameraScreenState extends State<CameraScreen> {
                     // crop image to prepare for ocr
                     await ImageProcessor.cropPlz(pic.path);
 
+                    //send imgpath to ocr
+                    final code = await OCR.ocr(pic.path);
+
                     //send file to image display widget
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SucessScreen(imgPath: pic.path)));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SucessScreen(code: code)));
                   },
                 ),
               ),

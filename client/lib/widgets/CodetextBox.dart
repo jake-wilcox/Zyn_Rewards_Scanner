@@ -1,3 +1,4 @@
+import 'package:client/pages/sucess_screen.dart';
 import 'package:flutter/material.dart';
 
 class CodeTextBox extends StatefulWidget {
@@ -24,11 +25,35 @@ class _CodeTextBoxState extends State<CodeTextBox> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TextField(
-          controller: _defaultCodeController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter Rewards Code',
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: SizedBox(
+            width: 250,
+            height: 50,
+            child: TextField(
+              controller: _defaultCodeController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter Rewards Code',
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 50,
+          child: TextButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      SucessScreen(code: _defaultCodeController.text)));
+            },
+            style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.blue),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              ),
+            ),
+            child: const Icon(Icons.arrow_right_alt, color: Colors.white),
           ),
         ),
       ],
