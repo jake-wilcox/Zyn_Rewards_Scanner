@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:client/functions/enterCode.dart';
 import 'package:client/widgets/CodetextBox.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SucessScreen extends StatefulWidget {
   final String code;
@@ -30,28 +31,79 @@ class _SucessScreenState extends State<SucessScreen> {
           : Center(
               child: Column(
                 children: [
-                  Text(_message),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 50, 15, 100),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 400,
+                          child: Container(
+                            color: _codeAccepted == false
+                                ? Colors.red
+                                : Colors.green,
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: Text(_message,
+                                        style: GoogleFonts.openSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          height: 1.3,
+                                        )),
+                                  ),
+                                  Icon(
+                                    _codeAccepted == false
+                                        ? Icons.dangerous_outlined
+                                        : Icons.check_circle,
+                                    color: Colors.white,
+                                    size: 35,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   _codeAccepted == false
-                      ? CodeTextBox(code: _code)
-                      : SizedBox(),
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: CodeTextBox(code: _code),
+                        )
+                      : const SizedBox(),
                   SizedBox(
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.camera_alt, color: Colors.grey),
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Color(0xff21a7d9)),
+                      ),
+                      child: const Icon(Icons.camera_alt, color: Colors.white),
                     ),
                   ),
                   SizedBox(
                     width: 300,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         //replace page with home
                         Navigator.popUntil(
-                            context, ModalRoute.withName('/home'));
+                          context,
+                          ModalRoute.withName('/home'),
+                        );
                       },
-                      child: Icon(Icons.home, color: Colors.grey),
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(Color(0xff1e4383)),
+                      ),
+                      child: const Icon(Icons.home, color: Colors.white),
                     ),
                   ),
                 ],

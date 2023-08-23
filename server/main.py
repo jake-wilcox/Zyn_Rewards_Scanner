@@ -34,6 +34,11 @@ def zyn_login():
     # return {'points': points}
     return {"success": True}
 
+@app.get('/acceptCookies')
+def accept_cookies():
+    s.accept_cookies()
+    return {"success": True}
+
 
 @app.get('/getPoints')
 def get_points():

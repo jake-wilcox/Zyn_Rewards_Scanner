@@ -48,7 +48,7 @@ class _CodeTextBoxState extends State<CodeTextBox> {
                       SucessScreen(code: _defaultCodeController.text)));
             },
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.blue),
+              backgroundColor: MaterialStatePropertyAll(Color(0xff21a7d9)),
               shape: MaterialStatePropertyAll(
                 RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),

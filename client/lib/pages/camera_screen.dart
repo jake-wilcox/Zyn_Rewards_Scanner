@@ -88,8 +88,8 @@ class _CameraScreenState extends State<CameraScreen> {
                     final code = await OCR.ocr(pic.path);
 
                     //send file to image display widget
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SucessScreen(code: code)));
+                    // Navigator.of(context).pop(MaterialPageRoute(builder: (context) => SucessScreen(code: code)));
+                    Navigator.pop(context, code);
                   },
                 ),
               ),

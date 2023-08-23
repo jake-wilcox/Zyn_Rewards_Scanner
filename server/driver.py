@@ -55,14 +55,18 @@ class Session():
         # login_button.click()
         # print(self.driver.current_url)
 
+    def accept_cookies(self):
+        print('accepting cookies')
+        print(self.driver.current_url)
+        cookies_bar = self.driver.find_element("xpath", "/html/body/div[13]/i")
+        time.sleep(random.randrange(1, 2))
+        cookies_bar.click()
+
 
     def get_points(self):
-        print(self.driver.current_url)
         print('getting points')
         points_element = self.driver.find_element("xpath", "/html/body/div[2]/a[2]/span[1]")
         print('found points element')
-        time.sleep(random.randrange(1, 2))
-        self.driver.find_element("xpath", "/html/body/div[13]/i").click()
         print(points_element.get_attribute('innerHTML'))
         return(points_element.get_attribute('innerHTML'))
 

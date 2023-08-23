@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  countup:
+    dependency: "direct main"
+    description:
+      name: countup
+      sha256: "3a7509b20170fd78ff9553848016465d34fdbc4ce8adb3d5361be80592b92675"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   cross_file:
     dependency: transitive
     description:
@@ -176,6 +184,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: e20ff62b158b96f392bfc8afe29dee1503c94fbea2cbe8186fd59b756b8ae982
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   google_ml_kit:
     dependency: "direct main"
     description:

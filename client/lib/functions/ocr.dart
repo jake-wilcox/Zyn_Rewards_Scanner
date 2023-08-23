@@ -8,6 +8,7 @@ class OCR {
         await textRecognizer.processImage(image);
     print(recognizedText.text);
     print('yuh');
-    return recognizedText.text;
+    String code = recognizedText.text;
+    return code.replaceAll(' ', '');
   }
 }
