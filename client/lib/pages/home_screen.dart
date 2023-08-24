@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:client/functions/enterCode.dart';
 import 'package:client/widgets/CodetextBox.dart';
+import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
@@ -19,11 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String message = '';
   bool initialLoad = true;
   bool messageLoading = true;
-  int points = 0;
+  double points = 0;
   String newPoints = '';
   final TextEditingController _defaultCodeController = TextEditingController();
 
-  var startPoints = 0;
+  double startPoints = 0;
 
   Future<void> acceptCookies() async {
     Response response =
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('cookies accepted');
   }
 
-  Future<String> getPoints() async {
+  Future<double> getPoints() async {
     Response response = await get(Uri.http('192.168.0.5:8000', 'getPoints'));
     print('data aquired over');
     Map data = jsonDecode(response.body);
@@ -67,6 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
       message = jsonResponse['message'];
       messageLoading = false;
     });
+  }
+
+  void updateStartPoints(sp) {
+    startPoints = sp;
   }
 
   @override
@@ -118,10 +123,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // if we got our data
                               } else if (snapshot.hasData) {
                                 // Extracting data from snapshot object
-                                final data = snapshot.data as String;
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  // Update startPoints after the UI is built
+                                  updateStartPoints(snapshot.data!);
+                                });
+
+                                final data = snapshot.data as double;
                                 return Center(
-                                  child: Text(
-                                    data,
+                                  child: Countup(
+                                    begin: startPoints,
+                                    end: data,
+                                    duration: Duration(seconds: 2),
                                     style: GoogleFonts.openSans(
                                       fontSize: 65,
                                       fontWeight: FontWeight.w800,
@@ -134,8 +147,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             }
 
                             // Displaying LoadingSpinner to indicate waiting state
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return Center(
+                              child: Text(
+                                '${startPoints.toStringAsFixed(0)}',
+                                style: GoogleFonts.openSans(
+                                  fontSize: 65,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                  height: 1,
+                                ),
+                              ),
                             );
                           },
 
@@ -244,7 +265,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final code = await Navigator.pushNamed(context, '/camera');
-          _enterCode(code);
+          print(code);
+          if (code != null) {
+            print('entering code');
+            _enterCode(code);
+          }
         },
         backgroundColor: const Color(0xff21a7d9),
         child: const Icon(Icons.camera_alt, color: Colors.white),

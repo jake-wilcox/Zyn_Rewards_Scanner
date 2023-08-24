@@ -43,7 +43,7 @@ def accept_cookies():
 @app.get('/getPoints')
 def get_points():
     points = s.get_points()
-    return {'points': points} 
+    return {'points': float(points)} 
 
 @app.post('/enterCode')
 def _enter_code(code: Code):
