@@ -59,7 +59,7 @@ class _CameraScreenState extends State<CameraScreen> {
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: const Text(
-            'James Camzyn',
+            'Rewards Scanner',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

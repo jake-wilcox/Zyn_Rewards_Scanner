@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xff21a7d9),
         title: const Text(
-          'James Camzyn',
+          'Rewards Scanner',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

@@ -75,7 +75,7 @@ class Session():
 
     def enter_code(self, code):
         self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/input").clear()
-        time.sleep(random.randrange(1, 2))
+        time.sleep(random.randrange(0, 1))
         self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/input").send_keys(code)
         time.sleep(random.randrange(1, 2))
         self.driver.find_element("xpath", "/html/body/div[8]/div/div[1]/form/div[1]/button").click()
