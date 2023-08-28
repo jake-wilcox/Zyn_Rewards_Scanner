@@ -9,8 +9,10 @@ exceptiongroup==1.1.1
 fake-useragent==1.2.1
 fastapi==0.101.0
 h11==0.14.0
+HLISA==1.4.1
 httptools==0.6.0
 idna==3.4
+numpy==1.25.2
 outcome==1.2.0
 packaging==23.1
 pydantic==2.1.1
