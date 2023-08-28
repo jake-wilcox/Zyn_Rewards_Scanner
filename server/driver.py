@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC 
 from webdriver_manager.chrome import ChromeDriverManager
+
+from HLISA.hlisa_action_chains import HLISA_ActionChains
 import os
 from dotenv import load_dotenv
 from fake_useragent import UserAgent
@@ -31,27 +33,52 @@ class Session():
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("--disable-extensions")
         options.add_argument(f'user-agent={ua.random}')
+        # options.add_argument('--headless')
+        # options.add_argument("--start-maximized");
+        # options.add_argument('--window-size=1920,1080')
+        options.add_argument("--lang=en-US,en")
+        options.add_argument("--disable-audio")
+        options.add_argument("--disable-gpu")  # Required when running on Windows
+
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return driver
 
     def login(self):
         print('logging in')
+        self.actions = HLISA_ActionChains(self.driver)
         self.driver.get("https://us.zyn.com/ZYNRewards/")
-        time.sleep(random.randrange(3,5))
-        self.driver.find_element("xpath", "/html/body/div[5]/div/div/div/div/button").click()
-        time.sleep(random.randrange(1, 3))
+        # time.sleep(random.randrange(3,5))
+        login_modal = self.driver.find_element("xpath", "/html/body/div[5]/div/div/div/div/button")
+        self.actions.move_to_element(login_modal)
+        self.actions.click(login_modal)
+        # time.sleep(random.randrange(1, 3))
         print('entering credentials')
-        self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[1]/input").send_keys(os.getenv('EMAIL'))
-        self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[2]/input").send_keys(os.getenv('PASSWORD'))
+        email_field = self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[1]/input")
+        password_field = self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[2]/input")
+        self.actions.move_to_element(email_field)
+        self.actions.send_keys(os.getenv('EMAIL'), email_field)
+        self.actions.move_to_element(email_field)
+        self.actions.send_keys(os.getenv('PASSWORD'), password_field)
 
 
         # time.sleep(random.randrange(5, 10))
-        # login_button = self.driver.find_element("xpath", "//button[@type='submit']")
+        login_button = self.driver.find_element("xpath", "//button[@type='submit']")
+        self.actions.move_to_element(login_button)
         # time.sleep(random.randrange(1, 3))
         # self.driver.find_element('xpath', '/html/body/div[6]/form/div/div[1]/div[3]/div').click()
         # time.sleep(random.randrange(30, 36))
         # print('clicking button')
-        # login_button.click()
+        self.actions.perform()
+        self.driver.save_screenshot("headless_screenshot.png")
+        for i in range(3):
+            print('clicking login button')
+            time.sleep(random.randrange(1, 2))
+            self.actions.double_click(login_button).perform()
+            time.sleep(random.randrange(1, 2))
+            print('checking url')
+            print(self.driver.current_url)
+            if self.driver.current_url == "https://us.zyn.com/ZYNRewards/?loggedIn=true":
+                break
         # login_button.click()
         # print(self.driver.current_url)
 
