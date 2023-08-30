@@ -19,8 +19,6 @@ load_dotenv()
 class Session():
     #Initalizing webdriver and signing into zyn
     def __init__(self):
-        #TODO: exception handeling for webdriver, loading inital page, and logging in,
-        #checking if code went through. might be done easier on the front end tho... -> if (initial points == points after a code is entered){return 'fuck'} 
         self.driver = self._start_driver()
         print('driver started')
 
@@ -30,15 +28,17 @@ class Session():
         options = Options()
         #detach option keeps browser open after runnning script & trying to get around 403 error
         options.add_experimental_option("detach", True)
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument("--disable-extensions")
         options.add_argument(f'user-agent={ua.random}')
         # options.add_argument('--headless')
-        # options.add_argument("--start-maximized");
-        # options.add_argument('--window-size=1920,1080')
-        options.add_argument("--lang=en-US,en")
-        options.add_argument("--disable-audio")
-        options.add_argument("--disable-gpu")  # Required when running on Windows
+        options.add_argument('--window-size=1420,900')
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--disable-extensions")
+        options.add_argument('--disable-infobars')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
 
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         return driver
@@ -47,11 +47,9 @@ class Session():
         print('logging in')
         self.actions = HLISA_ActionChains(self.driver)
         self.driver.get("https://us.zyn.com/ZYNRewards/")
-        # time.sleep(random.randrange(3,5))
         login_modal = self.driver.find_element("xpath", "/html/body/div[5]/div/div/div/div/button")
         self.actions.move_to_element(login_modal)
         self.actions.click(login_modal)
-        # time.sleep(random.randrange(1, 3))
         print('entering credentials')
         email_field = self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[1]/input")
         password_field = self.driver.find_element("xpath", "/html/body/div[6]/form/div/div[1]/div[2]/input")
@@ -59,28 +57,26 @@ class Session():
         self.actions.send_keys(os.getenv('EMAIL'), email_field)
         self.actions.move_to_element(email_field)
         self.actions.send_keys(os.getenv('PASSWORD'), password_field)
-
-
-        # time.sleep(random.randrange(5, 10))
         login_button = self.driver.find_element("xpath", "//button[@type='submit']")
         self.actions.move_to_element(login_button)
-        # time.sleep(random.randrange(1, 3))
-        # self.driver.find_element('xpath', '/html/body/div[6]/form/div/div[1]/div[3]/div').click()
-        # time.sleep(random.randrange(30, 36))
-        # print('clicking button')
         self.actions.perform()
-        self.driver.save_screenshot("headless_screenshot.png")
-        for i in range(3):
-            print('clicking login button')
-            time.sleep(random.randrange(1, 2))
-            self.actions.double_click(login_button).perform()
-            time.sleep(random.randrange(1, 2))
-            print('checking url')
-            print(self.driver.current_url)
+        print('clicking login button')
+        self.actions.click(login_button).perform()
+        print('checking url')
+        time.sleep(random.randrange(2, 3))
+        i = 0
+        sucess = False
+        while i < 40:
+            i += 1
+            time.sleep(.25)
             if self.driver.current_url == "https://us.zyn.com/ZYNRewards/?loggedIn=true":
+                sucess = True
                 break
-        # login_button.click()
-        # print(self.driver.current_url)
+        print(self.driver.current_url)
+        if sucess:
+            print('sucess')
+        else:
+            print('failed')
 
     def accept_cookies(self):
         print('accepting cookies')
