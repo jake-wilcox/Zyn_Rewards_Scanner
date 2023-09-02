@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client/widgets/snake.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -32,11 +33,11 @@ class _LoadingState extends State<Loading> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
-                child: Text('click when logged in'))
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Snake(),
+            ),
+            Text('hi'),
           ],
         ),
       ),

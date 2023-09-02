@@ -1,4 +1,4 @@
-import 'package:client/pages/sucess_screen.dart';
+import 'package:client/functions/enterCode.dart';
 import 'package:flutter/material.dart';
 
 class CodeTextBox extends StatefulWidget {
@@ -43,9 +43,7 @@ class _CodeTextBoxState extends State<CodeTextBox> {
           height: 50,
           child: TextButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      SucessScreen(code: _defaultCodeController.text)));
+              EnterCode.enterCodeReq(_defaultCodeController.text);
             },
             style: const ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(Color(0xff21a7d9)),
