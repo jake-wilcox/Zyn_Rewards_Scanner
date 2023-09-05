@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:client/functions/enterCode.dart';
-import 'package:client/widgets/CodetextBox.dart';
 import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
