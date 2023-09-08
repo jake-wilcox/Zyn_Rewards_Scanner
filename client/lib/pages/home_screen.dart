@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client/config.dart';
 import 'package:client/functions/enterCode.dart';
 import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
   double startPoints = 0;
 
   Future<void> acceptCookies() async {
-    Response response =
-        await get(Uri.http('192.168.0.5:8000', 'acceptCookies'));
+    Response response = await get(Uri.http(BASE_IP, 'acceptCookies'));
     print('cookies accepted');
   }
 
   Future<double> getPoints() async {
-    Response response = await get(Uri.http('192.168.0.5:8000', 'getPoints'));
+    Response response = await get(Uri.http(BASE_IP, 'getPoints'));
     print('data aquired over');
     Map data = jsonDecode(response.body);
     print(data);
